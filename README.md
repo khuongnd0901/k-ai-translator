@@ -6,7 +6,7 @@
 - Hợp nhất theo đúng thứ tự, xuất ra **TXT/DOCX/PDF**.
    
 ## Chạy nhanh
-
+ 
 ```bash
 # Yêu cầu: JDK 21 + Maven
 export OPENAI_API_KEY=sk-xxxx
