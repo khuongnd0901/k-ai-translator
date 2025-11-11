@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: k-ai-translator
+  main:
+    web-application-type: reactive
+
+translator:
+  provider: ${TRANSLATOR_PROVIDER:openai}
+  model: ${TRANSLATOR_MODEL:gpt-4o-mini}
+  targetLang: ${TRANSLATOR_TARGET_LANG:vi}
+  chunk:
+    maxChars: 1800
+  parallelism: 4
+  openai:
+    baseUrl: https://api.openai.com/v1
+    apiKey: ${OPENAI_API_KEY:}
