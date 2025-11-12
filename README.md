@@ -4,7 +4,7 @@
 - Upload file qua API reactive.
 - Tách văn bản theo chunk, gửi song song tới OpenAI (có thể thay thế provider).
 - Hợp nhất theo đúng thứ tự, xuất ra **TXT/DOCX/PDF**.
-   
+      
 ## Chạy nhanh
  
 ```bash
