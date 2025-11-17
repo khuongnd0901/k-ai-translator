@@ -49,7 +49,7 @@ public class TranslationController {
                             try (InputStream in = dataBuffer.asInputStream()) {
                                 // Đọc nội dung file bằng extractor cũ
                                 String text = FileTextExtractor.extract(finalFilename, in);
-                                System.out.println("PDF content: " + text);
+                                System.out.println("content: " + text);
                                 return text;
                             } finally {
                                 DataBufferUtils.release(dataBuffer);
