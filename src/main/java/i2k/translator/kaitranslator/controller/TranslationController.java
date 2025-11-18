@@ -4,31 +4,26 @@ import i2k.translator.kaitranslator.config.AppProperties;
 import i2k.translator.kaitranslator.service.FileTextExtractor;
 import i2k.translator.kaitranslator.service.FileWriters;
 import i2k.translator.kaitranslator.service.TranslationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.*;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
+import java.util.concurrent.Executor;
 
-@Controller
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class TranslationController {
-
     private final TranslationService translationService;
     private final AppProperties props;
+    private final Executor virtualExecutor;
 
-    public TranslationController(TranslationService translationService, AppProperties props) {
-        this.translationService = translationService;
-        this.props = props;
-    }
-
-    @GetMapping("/health")
-    public Mono<ResponseEntity<String>> health() {
+    @GetMapping("/health") public Mono<ResponseEntity<String>> health() {
         return Mono.just(ResponseEntity.ok("OK"));
     }
 
@@ -54,7 +49,7 @@ public class TranslationController {
                             } finally {
                                 DataBufferUtils.release(dataBuffer);
                             }
-                        }).subscribeOn(Schedulers.boundedElastic()) // tránh block event-loop
+                        }).subscribeOn(Schedulers.fromExecutor(virtualExecutor)) // tránh block event-loop
                 )
                 .flatMap(text -> translationService.translateText(text, sourceLang, tgt))
                 .flatMap(translated -> {
